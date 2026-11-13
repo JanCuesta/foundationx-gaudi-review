@@ -120,10 +120,10 @@ DATASETS_CONFIG = {
     "seg_siimacr_testList": "/data/jliang12/nuislam/data_files_splits/pxs/test.txt",
 
     # CANDID-PTX - Classification - Localization - Segmentation
-    "cls_candidptx_root": DATASET_DIR + "CANDID-PTX/dataset/",
-    "cls_candidptx_trainList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/CANDIDPTX_cls_train.txt",
-    "cls_candidptx_valList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/CANDIDPTX_cls_val.txt",
-    "cls_candidptx_testList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/CANDIDPTX_cls_test.txt",
+    "cls_candidptx_root": "/scratch/jcuesta/BME/datasets/CANDID-PTX/dataset/",
+    "cls_candidptx_trainList": "/scratch/jcuesta/BME/Foundation_X_data/splits/candid_ptx/CANDIDPTX_cls_train.txt",
+    "cls_candidptx_valList": "/scratch/jcuesta/BME/Foundation_X_data/splits/candid_ptx/CANDIDPTX_cls_val.txt",
+    "cls_candidptx_testList": "/scratch/jcuesta/BME/Foundation_X_data/splits/candid_ptx/CANDIDPTX_cls_test.txt",
 
     "loc_candidptx_trainTag": "candidptx_pneumothorax_train_full",
     "loc_candidptx_testTag": "candidptx_pneumothorax_val",
@@ -132,9 +132,9 @@ DATASETS_CONFIG = {
     "loc_candidptx_valList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/CANDID_PTX_valid_1.json",
     "loc_candidptx_testList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/CANDID_PTX_test_1.json",
 
-    "seg_candidptx_root": DATASET_DIR + "CANDID-PTX/dataset",
-    "seg_candidptx_trainList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/train.txt",
-    "seg_candidptx_testList": "/data/jliang12/nuislam/data_files_splits/candid_ptx/test.txt",
+    "seg_candidptx_root": "/scratch/jcuesta/BME/datasets/CANDID-PTX/dataset",
+    "seg_candidptx_trainList": "/scratch/jcuesta/BME/Foundation_X_data/splits/candid_ptx/train.txt",
+    "seg_candidptx_testList": "/scratch/jcuesta/BME/Foundation_X_data/splits/candid_ptx/test.txt",
 
 
     # RSNA PE - Classification - Localization
@@ -285,3 +285,30 @@ DATASETS_HEADS = {
     "CHESTXDET_SEG": 4,
     "SIIMACR_SEG": 5,
 }
+
+# PRACTICE2_CANDID_OVERRIDES
+DATASETS_CONFIG.update({
+    "cls_candidptx_root": "/scratch/jcuesta/BME/datasets/CANDID-PTX/dataset/",
+    "cls_candidptx_trainList": "/scratch/jcuesta/BME/Foundation_X/official_splits/candid_ptx/CANDIDPTX_cls_train.txt",
+    "cls_candidptx_valList": "/scratch/jcuesta/BME/Foundation_X/official_splits/candid_ptx/CANDIDPTX_cls_val.txt",
+    "cls_candidptx_testList": "/scratch/jcuesta/BME/Foundation_X/official_splits/candid_ptx/CANDIDPTX_cls_test.txt",
+    "loc_candidptx_root": "/data/jliang12/bmalamut/CANDID-PTX/png",
+    "loc_candidptx_trainList": "/data/jliang12/bmalamut/CANDID-PTX/annotations/CANDID_PTX_train_1.json",
+    "loc_candidptx_valList": "/data/jliang12/bmalamut/CANDID-PTX/annotations/CANDID_PTX_valid_1.json",
+    "loc_candidptx_testList": "/data/jliang12/bmalamut/CANDID-PTX/annotations/CANDID_PTX_test_1.json",
+    "seg_candidptx_root": "/scratch/jcuesta/BME/datasets/CANDID-PTX/dataset",
+    "seg_candidptx_trainList": "/scratch/jcuesta/BME/Foundation_X/official_splits/candid_ptx/train.txt",
+    "seg_candidptx_testList": "/scratch/jcuesta/BME/Foundation_X/official_splits/candid_ptx/test.txt",
+})
+
+# PRACTICE2_STEP3_PATH_FIXES
+DATASETS_CONFIG.update({'cls_vindrcxr_root': '/data/jliang12/jpang12/dataset/VinDr-CXR/physionet.org/files/vindr-cxr/1.0.0/', 'cls_shenzencxr_root': '/data/jliang12/jpang12/dataset/ShenzhenHospitalXray/ChinaSet_AllFiles/CXR_png/', 'cls_tbx11k_root': '/data/jliang12/jpang12/dataset/tbx11k/TBX11K/', 'cls_tbx11k_trainList': 'lists/TBX11K_train.txt', 'cls_tbx11k_testList': 'lists/TBX11K_val.txt', 'loc_tbx11k_root': '/data/jliang12/jpang12/dataset/tbx11k/TBX11K/imgs', 'loc_tbx11k_trainList': '/data/jliang12/shared/dataset/TBX11/TBX11K/annotations/all_train_2.json', 'loc_tbx11k_testList': '/data/jliang12/shared/dataset/TBX11/TBX11K/annotations/all_val_2.json', 'loc_node21_root': '/data/jliang12/shared/dataset/NODE21/png_images', 'loc_rsnapneumonia_testList': '/data/jliang12/nuislam/data_files_splits/rsna_pneumonia/rsnaPneumoniaDetection_Test.json', 'seg_chestxdet_trainList': '/data/jliang12/jpang12/dataset/ChestX-Det/train_binary_mask/', 'seg_chestxdet_testList': '/data/jliang12/jpang12/dataset/ChestX-Det/test_binary_mask/'})
+
+# Practice 2 Step III: CheXpert dataset location
+DATASETS_CONFIG["cls_chexpert_root"] = "/data/jliang12/jpang12/dataset/CheXpert-v1.0/"
+
+# Practice 2 Step III: MIMIC-CXR dataset location
+DATASETS_CONFIG["cls_mimiccxr_root"] = "/data/jliang12/jpang12/dataset/MIMIC_jpeg/physionet.org/files/mimic-cxr-jpg/2.0.0/"
+
+# Practice 2 Step III: NODE21 classification root
+DATASETS_CONFIG["cls_node21_root"] = "/data/jliang12/shared/dataset/NODE21/"

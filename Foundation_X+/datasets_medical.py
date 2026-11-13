@@ -4111,6 +4111,29 @@ def dataloader_return(args):
             train_loader_seg_ChestXDet, test_loader_seg_ChestXDet, train_loader_seg_SIIM, test_loader_seg_SIIM, train_loader_seg_CANDIDptx, test_loader_seg_CANDIDptx
     
 
+    # PRACTICE2_CANDID_ONLY_FAST_PATH
+    candid_tasks = {"candidptxCLS", "candidptxLOC", "candidptxSEG"}
+    if args.taskcomponent in ["foundation_x3_pretraining", "foundation_x4_pretraining", "foundation_x5_pretraining"] and set(args.cyclictask.split("_")).issubset(candid_tasks):
+        dataset_train = CANDIDPTX(images_path=DATASETS_CONFIG["cls_candidptx_root"], file_path=DATASETS_CONFIG["cls_candidptx_trainList"], augment=build_transform_classification(normalize="chestx-ray", crop_size=args.imgsize, mode="train"))
+        dataset_test = CANDIDPTX(images_path=DATASETS_CONFIG["cls_candidptx_root"], file_path=DATASETS_CONFIG["cls_candidptx_testList"], augment=build_transform_classification(normalize="chestx-ray", crop_size=args.imgsize, mode="test2"))
+        train_loader_cls_CANDIDptx = DataLoader(dataset_train, batch_size=args.batch_size, shuffle=True, num_workers=args.num_workers, pin_memory=True, drop_last=True)
+        test_loader_cls_CANDIDptx = DataLoader(dataset_test, batch_size=args.batch_size, shuffle=False, num_workers=args.num_workers, pin_memory=True)
+        dataset_train_loc_CANDIDptx = build_dataset(image_set=DATASETS_CONFIG["loc_candidptx_trainTag"], args=args)
+        dataset_val_loc_CANDIDptx = build_dataset(image_set=DATASETS_CONFIG["loc_candidptx_testTag"], args=args)
+        sampler_train_CANDIDptx = torch.utils.data.RandomSampler(dataset_train_loc_CANDIDptx)
+        sampler_val = torch.utils.data.SequentialSampler(dataset_val_loc_CANDIDptx)
+        batch_sampler_train = torch.utils.data.BatchSampler(sampler_train_CANDIDptx, args.batch_size, drop_last=True)
+        train_loader_loc_CANDIDptx = DataLoader(dataset_train_loc_CANDIDptx, batch_sampler=batch_sampler_train, collate_fn=utils.collate_fn, num_workers=args.num_workers)
+        test_loader_loc_CANDIDptx = DataLoader(dataset_val_loc_CANDIDptx, 1, sampler=sampler_val, drop_last=False, collate_fn=utils.collate_fn, num_workers=args.num_workers)
+        train_dataset_seg = Candid_PTX_PXSDataset([(DATASETS_CONFIG["seg_candidptx_root"], DATASETS_CONFIG["seg_candidptx_trainList"])], image_size=(args.imgsize,args.imgsize), mode="train")
+        train_loader_seg_CANDIDptx = DataLoader(train_dataset_seg, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, shuffle=True)
+        test_dataset_seg = Candid_PTX_PXSDataset([(DATASETS_CONFIG["seg_candidptx_root"], DATASETS_CONFIG["seg_candidptx_testList"])], image_size=(args.imgsize,args.imgsize), mode="test")
+        test_loader_seg_CANDIDptx = DataLoader(test_dataset_seg, batch_size=args.batch_size, num_workers=args.num_workers, pin_memory=True, drop_last=False)
+        cls_pair=(train_loader_cls_CANDIDptx,test_loader_cls_CANDIDptx)
+        loc_group=(train_loader_loc_CANDIDptx,test_loader_loc_CANDIDptx,dataset_val_loc_CANDIDptx,sampler_train_CANDIDptx)
+        seg_pair=(train_loader_seg_CANDIDptx,test_loader_seg_CANDIDptx)
+        return tuple(list(cls_pair)*11 + list(loc_group)*6 + list(seg_pair)*3)
+
     if args.taskcomponent in ['foundation_x3_pretraining', 'foundation_x4_pretraining', 'foundation_x5_pretraining']:       
         ## Dataloader for Classification -------------------------------------------------------------
         train_list = DATASETS_CONFIG["cls_nih_trainList"]
